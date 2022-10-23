@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.executionmanifestgenerator.Controller">
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+    <VBox fx:id="vb" style="-fx-background-color: #ccddff;">
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="0.0" style="-fx-background-color: #ffffff;">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <children>
+                <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="ExecutionManifest ID" textAlignment="CENTER" textFill="#ffffff">
+                    <padding>
+                        <Insets bottom="0" left="5" right="5" top="0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="filename" prefHeight="39.0" prefWidth="400.0" style=" -fx-background-radius: 0;-fx-font-weight: bold;">
+                    <padding>
+                        <Insets bottom="0" left="5" right="5" top="0" />
+                    </padding>
+                </TextField>
+                <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+
+            </children></HBox>
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="20.0" style="-fx-background-color: #ccddff;">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <children>
+                <ChoiceBox fx:id="choice" prefWidth="150.0" value="Platform Application">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+
+                            <String fx:value="Platform Application" />
+                            <String fx:value="Adaptive Application" />
+
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+
+                <Button fx:id="addBtn" onAction="#addConfig" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Add Config" textAlignment="CENTER" textFill="#fffefe">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+                <Button fx:id="RMVBtn" onAction="#removeConfig" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Remove Config" textAlignment="CENTER" textFill="#fffefe">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Button>
+            </children></HBox>
+        <ScrollPane fx:id="scroll" maxHeight="400.0" minHeight="400.0" minWidth="700.0" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <content>
+                <Accordion fx:id="accordion" focusTraversable="false" maxHeight="300.0" maxWidth="680.0" minHeight="300.0" minWidth="680.0">
+                    <panes>
+
+                    </panes>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </Accordion>
+            </content>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin></ScrollPane>
+
+
+    </VBox>
+</Pane>
