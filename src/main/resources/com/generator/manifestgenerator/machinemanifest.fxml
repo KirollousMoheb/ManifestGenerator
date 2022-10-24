@@ -33,7 +33,7 @@
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
                 </TextField>
-                <Button fx:id="inputBtn" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
+                <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
                     <font>
                         <Font size="13.0" />
                     </font>

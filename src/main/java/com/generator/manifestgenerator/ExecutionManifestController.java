@@ -35,6 +35,7 @@ public class ExecutionManifestController {
     TextField filename;
     @FXML
     ChoiceBox choice;
+
     public void clickBack(ActionEvent e) throws IOException {
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader MainScreenPaneLoader = new FXMLLoader(getClass().getResource("main.fxml"));
