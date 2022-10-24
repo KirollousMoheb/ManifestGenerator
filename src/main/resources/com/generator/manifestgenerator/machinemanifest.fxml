@@ -74,7 +74,7 @@
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
             <content>
-                <Accordion fx:id="accordion" focusTraversable="false" maxHeight="300.0" maxWidth="680.0" minHeight="300.0" minWidth="680.0">
+                <Accordion fx:id="accordion" focusTraversable="false" maxHeight="150.0" maxWidth="680.0" minHeight="150.0" minWidth="680.0">
                     <panes>
 
                     </panes>

@@ -1,5 +1,10 @@
 package com.generator.manifestgenerator;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import org.controlsfx.control.CheckComboBox;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MachineManifestController {
     private ArrayList<String> fg_names=new ArrayList<>();
@@ -117,6 +123,31 @@ public boolean checkFGName(){
         GridPane grid = new GridPane();
         grid.setVgap(4);
         grid.setPadding(new Insets(5, 5, 5, 5));
+        grid.add(new Label("Function Group Modes: "), 0, 0);
+        grid.add(createCheckComboBox(),1,0);
         return grid;
+    }
+    private List<String> getSelectedItems(CheckComboBox<String> checkComboBox) {
+        return checkComboBox.getCheckModel().getCheckedItems();
+    }
+    private CheckComboBox<String> createCheckComboBox() {
+        // Create the list of items to be shown on the combobox
+        ObservableList<String> programmingLanguages = FXCollections.observableArrayList(
+                "off",
+                "startup",
+                "running",
+                "shutdown",
+                "restart"
+        );
+        // Attach the list to the Combobox
+        CheckComboBox<String> checkComboBox = new CheckComboBox<>(programmingLanguages);
+        //As soon as an item is selected or selection is changed, display all the selected items
+        checkComboBox.getCheckModel().getCheckedItems().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                System.out.printf("\nSelected items: %s", getSelectedItems(checkComboBox));
+            }
+        });
+        return checkComboBox;
     }
 }
