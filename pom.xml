@@ -66,7 +66,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.generator.executionmanifestgenerator/com.generator.executionmanifestgenerator.MainApplication
+                                com.generator.executionmanifestgenerator/com.generator.manifestgenerator.MainApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

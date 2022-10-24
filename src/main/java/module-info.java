@@ -4,6 +4,6 @@ module com.generator.executionmanifestgenerator {
     requires json.simple;
 
 
-    opens com.generator.executionmanifestgenerator to javafx.fxml;
-    exports com.generator.executionmanifestgenerator;
+    opens com.generator.manifestgenerator to javafx.fxml;
+    exports com.generator.manifestgenerator;
 }

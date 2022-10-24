@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.executionmanifestgenerator.Controller">
+<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.ExecutionManifestController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>

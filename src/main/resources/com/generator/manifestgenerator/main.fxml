@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane prefHeight="500.0" prefWidth="620.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.MainScreenController">
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+    <VBox fx:id="vb" style="-fx-background-color: #ccddff;">
+        <children>
+            <HBox maxHeight="400.0" maxWidth="400.0" minHeight="420.0" minWidth="550.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #ffffff;">
+            <VBox.margin>
+               <Insets bottom="30.0" left="30.0" top="40.0" />
+            </VBox.margin>
+            <children>
+                <VBox alignment="CENTER" minWidth="300.0" spacing="20">
+                    <Button fx:id="emManifest" onAction="#goToEM" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Execution Manifest" textAlignment="CENTER" textFill="#fffefe">
+                        <font>
+                            <Font size="12.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="machineManifest" onAction="#goToMachine" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Machine Manifest" textAlignment="CENTER" textFill="#fffefe">
+                        <font>
+                            <Font size="12.0" />
+                        </font>
+                    </Button>
+                  <HBox.margin>
+                     <Insets left="130.0" />
+                  </HBox.margin>
+                </VBox>
+            </children>
+            </HBox>
+
+        </children>
+
+
+    </VBox>
+</Pane>

@@ -1,4 +1,4 @@
-package com.generator.executionmanifestgenerator;
+package com.generator.manifestgenerator;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Controller {
+public class ExecutionManifestController {
 
     private static int count=0;
     private List<TextField> fg_name_container = new ArrayList<>();
