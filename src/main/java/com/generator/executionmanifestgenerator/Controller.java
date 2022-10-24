@@ -17,12 +17,12 @@ import java.util.List;
 public class Controller {
 
     private static int count=0;
-    private List<TextField> fg_name_container = new ArrayList();
-    private List<TextField> fg_modes_container = new ArrayList();
-    private List<TextField> sch_policy_container = new ArrayList();
-    private List<TextField> sch_priority_container = new ArrayList();
-    private List<TextField> args_container = new ArrayList();
-    private List<TextField> env_container = new ArrayList();
+    private List<TextField> fg_name_container = new ArrayList<>();
+    private List<TextField> fg_modes_container = new ArrayList<>();
+    private List<TextField> sch_policy_container = new ArrayList<>();
+    private List<TextField> sch_priority_container = new ArrayList<>();
+    private List<TextField> args_container = new ArrayList<>();
+    private List<TextField> env_container = new ArrayList<>();
 
     @FXML
     Accordion accordion;
@@ -39,7 +39,23 @@ public class Controller {
         removePane(accordion);
     }
     public void generateManifest()  {
-        System.out.println("printing");
+        if(count==0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Execution Manifest Error");
+            alert.setHeaderText("Must have at least one Startup Configuration");
+            alert.setContentText("Please Add at least one Startup Configuration");
+            alert.showAndWait();
+            return;
+        }
+        String validationMessage=validateFields();
+        if (!validationMessage.equals("OK")){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Execution Manifest Error");
+            alert.setHeaderText(validationMessage);
+            alert.setContentText("Please complete the missing fields");
+            alert.showAndWait();
+            return;
+        }
         JSONObject main_obj = new JSONObject();
         if(choice.getValue().equals("Adaptive Application")){
             main_obj.put("platform_application","false");
@@ -213,5 +229,27 @@ public class Controller {
                 "startup_config_"+(count+1),
                 createTitledPaneContent()
         );
+    }
+    private String validateFields(){
+        for(int i=0;i<count;i++){
+            if (fg_name_container.get(i).getText().trim().isEmpty()||fg_name_container.get(i).getText()==null){
+                return fg_name_container.get(i).getId()+" is Empty";
+            } else if (fg_modes_container.get(i).getText().trim().isEmpty()||fg_modes_container.get(i).getText()==null) {
+                return fg_modes_container.get(i).getId()+" is Empty";
+            }
+            else if (sch_policy_container.get(i).getText().trim().isEmpty()||sch_policy_container.get(i).getText()==null) {
+                return sch_policy_container.get(i).getId()+" is Empty";
+            }
+            else if (sch_priority_container.get(i).getText().trim().isEmpty()||sch_priority_container.get(i).getText()==null) {
+                return sch_priority_container.get(i).getId()+" is Empty";
+            }
+            else if (args_container.get(i).getText().trim().isEmpty()||args_container.get(i).getText()==null) {
+                return args_container.get(i).getId()+" is Empty";
+            }
+            else if (env_container.get(i).getText().trim().isEmpty()||env_container.get(i).getText()==null) {
+                return env_container.get(i).getId()+" is Empty";
+            }
+        }
+        return "OK";
     }
 }
