@@ -1,9 +1,14 @@
 package com.generator.manifestgenerator;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.FileWriter;
@@ -16,7 +21,7 @@ import java.util.List;
 
 public class ExecutionManifestController {
 
-    private static int count=0;
+    private  int count=0;
     private List<TextField> fg_name_container = new ArrayList<>();
     private List<TextField> fg_modes_container = new ArrayList<>();
     private List<TextField> sch_policy_container = new ArrayList<>();
@@ -32,6 +37,14 @@ public class ExecutionManifestController {
     TextField filename;
     @FXML
     ChoiceBox choice;
+    public void clickBack(ActionEvent e) throws IOException {
+        Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader MainScreenPaneLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent MainScreenPane = MainScreenPaneLoader.load();
+        Scene MainScreenScene = new Scene(MainScreenPane, 620, 500);
+        primaryStage.setTitle("Manifest Generator");
+        primaryStage.setScene(MainScreenScene);
+    }
     public void addConfig() throws Exception {
         addPane(accordion,scroll);
     }

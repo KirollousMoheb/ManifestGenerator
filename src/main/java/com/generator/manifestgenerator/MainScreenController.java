@@ -16,7 +16,7 @@ public class MainScreenController {
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader MachineManifestPaneLoader = new FXMLLoader(getClass().getResource("machinemanifest.fxml"));
         Parent MachineManifestPane = MachineManifestPaneLoader.load();
-        Scene MachineManifestScene = new Scene(MachineManifestPane, 720, 600);
+        Scene MachineManifestScene = new Scene(MachineManifestPane, 780, 600);
         primaryStage.setTitle("Machine Manifest Generator");
         primaryStage.setScene(MachineManifestScene);
     }
@@ -25,7 +25,7 @@ public class MainScreenController {
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
         FXMLLoader ExecutionManifestPaneLoader = new FXMLLoader(getClass().getResource("executionmanifest.fxml"));
         Parent ExecutionManifestPane = ExecutionManifestPaneLoader.load();
-        Scene ExecutionManifestScene = new Scene(ExecutionManifestPane, 720, 600);
+        Scene ExecutionManifestScene = new Scene(ExecutionManifestPane, 780, 600);
         primaryStage.setTitle("Execution Manifest Generator");
         primaryStage.setScene(ExecutionManifestScene);
     }

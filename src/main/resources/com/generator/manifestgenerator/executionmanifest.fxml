@@ -17,6 +17,14 @@
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
             <children>
+                <Button fx:id="backButton" minHeight="38.0" onAction="#clickBack" prefHeight="39.0" prefWidth="70.0" style="-fx-background-color: #0066ff;-fx-background-radius: 0;-fx-font-weight: bold;" text="&lt;" textAlignment="CENTER" textFill="#ffffff">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets right="2.0" />
+                    </HBox.margin>
+                </Button>
                 <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="ExecutionManifest ID" textAlignment="CENTER" textFill="#ffffff">
                     <padding>
                         <Insets bottom="0" left="5" right="5" top="0" />
