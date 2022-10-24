@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.ExecutionManifestController">
+<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.ExecutionManifestController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
     <VBox fx:id="vb" style="-fx-background-color: #ccddff;">
-        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="0.0" style="-fx-background-color: #ffffff;">
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minWidth="780.0" spacing="0.0" style="-fx-background-color: #ffffff;">
             <padding>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
@@ -34,6 +34,10 @@
                     <padding>
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
+               <font>
+                  <Font size="18.0" />
+               </font>
+
                 </TextField>
                 <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
                     <font>

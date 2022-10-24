@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ExecutionManifestController {
-
     private  int count=0;
     private List<TextField> fg_name_container = new ArrayList<>();
     private List<TextField> fg_modes_container = new ArrayList<>();
@@ -28,7 +27,6 @@ public class ExecutionManifestController {
     private List<TextField> sch_priority_container = new ArrayList<>();
     private List<TextField> args_container = new ArrayList<>();
     private List<TextField> env_container = new ArrayList<>();
-
     @FXML
     Accordion accordion;
     @FXML
@@ -47,9 +45,11 @@ public class ExecutionManifestController {
     }
     public void addConfig() throws Exception {
         addPane(accordion,scroll);
+        System.out.println(count);
     }
     public void removeConfig() throws Exception{
         removePane(accordion);
+        System.out.println(count);
     }
     public void generateManifest()  {
         if(count==0){
@@ -100,7 +100,7 @@ public class ExecutionManifestController {
         }
         main_obj.put("startup_configs",Config);
         try (FileWriter Data = new FileWriter(filename.getText()+".json")) {
-            Data.write(formatJSONStr(main_obj.toString(),4)); // setting spaces for indent
+            Data.write(prettifyJSON(main_obj.toString(),4)); // setting spaces for indent
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Execution Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
@@ -112,7 +112,7 @@ public class ExecutionManifestController {
             e1.printStackTrace();
         }
     }
-    public static String formatJSONStr(final String json_str, final int indent_width) {
+    public static String prettifyJSON(final String json_str, final int indent_width) {
         final char[] chars = json_str.toCharArray();
         final String newline = System.lineSeparator();
 
@@ -168,17 +168,23 @@ public class ExecutionManifestController {
         scrollPane.setVvalue(scrollPane.getVmax());
     }
     private void removePane(Accordion accordion) {
-        TitledPane expandedPane = accordion.getExpandedPane();
 
-        if (expandedPane != null) {
-            int expandedIndex = accordion.getPanes().indexOf(expandedPane);
-            accordion.getPanes().remove(expandedPane);
+        if (count >0) {
+            count--;
+
+            accordion.getPanes().remove(count);
+            fg_modes_container.remove(fg_modes_container.size()-1);
+            fg_name_container.remove(fg_name_container.size()-1);
+            sch_priority_container.remove(sch_priority_container.size()-1);
+            sch_policy_container.remove(sch_policy_container.size()-1);
+            args_container.remove(args_container.size()-1);
+            env_container.remove(env_container.size()-1);
 
             int nPanes = accordion.getPanes().size();
 
             if (nPanes > 0) {
                 TitledPane nextPane = accordion.getPanes().get(
-                        Math.max(0, expandedIndex - 1)
+                        Math.max(0, count-1)
                 );
 
                 accordion.setExpandedPane(
@@ -187,7 +193,6 @@ public class ExecutionManifestController {
 
                 nextPane.requestFocus();
             }
-            count--;
 
         }
     }
