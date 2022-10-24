@@ -45,11 +45,9 @@ public class ExecutionManifestController {
     }
     public void addConfig() throws Exception {
         addPane(accordion,scroll);
-        System.out.println(count);
     }
     public void removeConfig() throws Exception{
         removePane(accordion);
-        System.out.println(count);
     }
     public void generateManifest()  {
         if(count==0){
@@ -66,6 +64,14 @@ public class ExecutionManifestController {
             alert.setTitle("Execution Manifest Error");
             alert.setHeaderText(validationMessage);
             alert.setContentText("Please complete the missing fields");
+            alert.showAndWait();
+            return;
+        }
+        if(filename.getText().trim().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Execution Manifest Error");
+            alert.setHeaderText("Missing Execution Manifest Id");
+            alert.setContentText("You must Enter Execution Manifest Id");
             alert.showAndWait();
             return;
         }

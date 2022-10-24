@@ -1,0 +1,24 @@
+{
+    "platform_application": "true",
+    "startup_configs": {
+        "Config_1": {
+            "machine_states": [
+                
+            ],
+            "depends": {
+                
+            },
+            "environments": [
+                "1"
+            ],
+            "scheduling_priority": "1",
+            "function_groups_states": {
+                "1": "1"
+            },
+            "arguments": [
+                "1"
+            ],
+            "scheduling_policy": "1"
+        }
+    }
+}
