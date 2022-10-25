@@ -1,8 +1,4 @@
 package com.generator.manifestgenerator;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.stage.FileChooser;
-import org.controlsfx.control.CheckComboBox;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,23 +11,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 import org.json.simple.JSONObject;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachineManifestController {
-    private ArrayList<String> fg_names=new ArrayList<>();
-    private List<CheckComboBox<String>> fg_modes_checkboxes = new ArrayList<>();
+    private final ArrayList<String> fg_names=new ArrayList<>();
+    private final List<CheckComboBox<String>> fg_modes_checkboxes = new ArrayList<>();
 
-    private int count=0;
     @FXML
     Accordion accordion;
     @FXML
@@ -83,7 +78,7 @@ public class MachineManifestController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Execution Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
-            alert.setContentText("Path: "+path.toAbsolutePath().toString());
+            alert.setContentText("Path: "+ path.toAbsolutePath());
             alert.showAndWait();
         }
 
@@ -103,14 +98,14 @@ public class MachineManifestController {
         final char[] chars = json_str.toCharArray();
         final String newline = System.lineSeparator();
 
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
         boolean begin_quotes = false;
 
         for (int i = 0, indent = 0; i < chars.length; i++) {
             char c = chars[i];
 
             if (c == '\"') {
-                ret += c;
+                ret.append(c);
                 begin_quotes = !begin_quotes;
                 continue;
             }
@@ -119,27 +114,27 @@ public class MachineManifestController {
                 switch (c) {
                     case '{':
                     case '[':
-                        ret += c + newline + String.format("%" + (indent += indent_width) + "s", "");
+                        ret.append(c).append(newline).append(String.format("%" + (indent += indent_width) + "s", ""));
                         continue;
                     case '}':
                     case ']':
-                        ret += newline + ((indent -= indent_width) > 0 ? String.format("%" + indent + "s", "") : "") + c;
+                        ret.append(newline).append((indent -= indent_width) > 0 ? String.format("%" + indent + "s", "") : "").append(c);
                         continue;
                     case ':':
-                        ret += c + " ";
+                        ret.append(c).append(" ");
                         continue;
                     case ',':
-                        ret += c + newline + (indent > 0 ? String.format("%" + indent + "s", "") : "");
+                        ret.append(c).append(newline).append(indent > 0 ? String.format("%" + indent + "s", "") : "");
                         continue;
                     default:
                         if (Character.isWhitespace(c)) continue;
                 }
             }
 
-            ret += c + (c == '\\' ? "" + chars[++i] : "");
+            ret.append(c).append(c == '\\' ? "" + chars[++i] : "");
         }
 
-        return ret;
+        return ret.toString();
     }
 
     public void clickBack(ActionEvent e) throws IOException {
@@ -200,14 +195,13 @@ public void addFunctionGroup(){
 
                 nextPane.requestFocus();
             }
-            count--;
 
         }
     }
 
 public boolean checkFGName(){
-    for(int i=0;i< fg_names.size();i++){
-        if(fg_names.get(i).equals(fgname.getText().trim())){
+    for (String fg_name : fg_names) {
+        if (fg_name.equals(fgname.getText().trim())) {
             return true;
         }
     }
@@ -216,7 +210,6 @@ public boolean checkFGName(){
 
     private void addPane(Accordion accordion, ScrollPane scrollPane,String paneLabel) {
         TitledPane newPane = createTitledPane(paneLabel);
-        count++;
 
         accordion.getPanes().add(newPane);
         accordion.setExpandedPane(newPane);
@@ -258,9 +251,8 @@ public boolean checkFGName(){
                 "restart"
         );
         // Attach the list to the Combobox
-        CheckComboBox<String> checkComboBox = new CheckComboBox<>(programmingLanguages);
         //As soon as an item is selected or selection is changed, display all the selected items
 
-        return checkComboBox;
+        return new CheckComboBox<>(programmingLanguages);
     }
 }

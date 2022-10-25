@@ -1,4 +1,5 @@
 package com.generator.manifestgenerator;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,23 +15,21 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ExecutionManifestController {
     private  int count=0;
-    private List<TextField> fg_name_container = new ArrayList<>();
-    private List<TextField> fg_modes_container = new ArrayList<>();
-    private List<TextField> sch_policy_container = new ArrayList<>();
-    private List<TextField> sch_priority_container = new ArrayList<>();
-    private List<TextField> args_container = new ArrayList<>();
-    private List<TextField> env_container = new ArrayList<>();
+    private final List<TextField> fg_name_container = new ArrayList<>();
+    private final List<TextField> fg_modes_container = new ArrayList<>();
+    private final List<TextField> sch_policy_container = new ArrayList<>();
+    private final List<TextField> sch_priority_container = new ArrayList<>();
+    private final List<TextField> args_container = new ArrayList<>();
+    private final List<TextField> env_container = new ArrayList<>();
     @FXML
     Accordion accordion;
     @FXML
@@ -48,10 +47,10 @@ public class ExecutionManifestController {
         primaryStage.setTitle("Manifest Generator");
         primaryStage.setScene(MainScreenScene);
     }
-    public void addConfig() throws Exception {
+    public void addConfig() {
         addPane(accordion,scroll);
     }
-    public void removeConfig() throws Exception{
+    public void removeConfig() {
         removePane(accordion);
     }
     public void generateManifest(ActionEvent e)  {
@@ -124,7 +123,7 @@ public class ExecutionManifestController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Execution Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
-            alert.setContentText("Path: "+path.toAbsolutePath().toString());
+            alert.setContentText("Path: "+ path.toAbsolutePath());
             alert.showAndWait();
         }
 
@@ -144,14 +143,14 @@ public class ExecutionManifestController {
         final char[] chars = json_str.toCharArray();
         final String newline = System.lineSeparator();
 
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
         boolean begin_quotes = false;
 
         for (int i = 0, indent = 0; i < chars.length; i++) {
             char c = chars[i];
 
             if (c == '\"') {
-                ret += c;
+                ret.append(c);
                 begin_quotes = !begin_quotes;
                 continue;
             }
@@ -160,27 +159,27 @@ public class ExecutionManifestController {
                 switch (c) {
                     case '{':
                     case '[':
-                        ret += c + newline + String.format("%" + (indent += indent_width) + "s", "");
+                        ret.append(c).append(newline).append(String.format("%" + (indent += indent_width) + "s", ""));
                         continue;
                     case '}':
                     case ']':
-                        ret += newline + ((indent -= indent_width) > 0 ? String.format("%" + indent + "s", "") : "") + c;
+                        ret.append(newline).append((indent -= indent_width) > 0 ? String.format("%" + indent + "s", "") : "").append(c);
                         continue;
                     case ':':
-                        ret += c + " ";
+                        ret.append(c).append(" ");
                         continue;
                     case ',':
-                        ret += c + newline + (indent > 0 ? String.format("%" + indent + "s", "") : "");
+                        ret.append(c).append(newline).append(indent > 0 ? String.format("%" + indent + "s", "") : "");
                         continue;
                     default:
                         if (Character.isWhitespace(c)) continue;
                 }
             }
 
-            ret += c + (c == '\\' ? "" + chars[++i] : "");
+            ret.append(c).append(c == '\\' ? "" + chars[++i] : "");
         }
 
-        return ret;
+        return ret.toString();
     }
     private void addPane(Accordion accordion, ScrollPane scrollPane) {
         TitledPane newPane = createTitledPane();
