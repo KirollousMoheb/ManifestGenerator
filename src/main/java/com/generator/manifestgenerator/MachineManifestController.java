@@ -1,6 +1,7 @@
 package com.generator.manifestgenerator;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.stage.FileChooser;
 import org.controlsfx.control.CheckComboBox;
 
 import javafx.collections.FXCollections;
@@ -17,8 +18,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ public class MachineManifestController {
         addPane(accordion,scroll,"machineState");
         fg_names.add("machineState");
     }
-    public void generateManifest(){
+    public void generateManifest(ActionEvent e){
         if(filename.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Execution Manifest Error");
@@ -67,20 +70,34 @@ public class MachineManifestController {
             fgs_objs.put(fg_names.get(i),fg_obj);
         }
         main_obj.put("function_groups",fgs_objs);
-        try (FileWriter Data = new FileWriter(filename.getText()+".json")) {
-            Data.write(prettifyJSON(main_obj.toString(),4)); // setting spaces for indent
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Machine Manifest Generated");
-            alert.setHeaderText("File Saved Successfully");
-            Path path = Paths.get(filename.getText()+".json");
+        Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
 
+        FileChooser fileChooser=new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("JSON file(*.json)","*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        fileChooser.setInitialFileName(filename.getText().trim());
+        File file=fileChooser.showSaveDialog(primaryStage);
+        if (file != null) {
+            saveTextToFile(prettifyJSON(main_obj.toString(),4), file);
+            Path path= Path.of(file.getAbsolutePath());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Execution Manifest Generated");
+            alert.setHeaderText("File Saved Successfully");
             alert.setContentText("Path: "+path.toAbsolutePath().toString());
             alert.showAndWait();
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
 
 
+    }
+    private void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     public static String prettifyJSON(final String json_str, final int indent_width) {
         final char[] chars = json_str.toCharArray();

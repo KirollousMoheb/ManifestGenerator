@@ -8,11 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -50,7 +54,8 @@ public class ExecutionManifestController {
     public void removeConfig() throws Exception{
         removePane(accordion);
     }
-    public void generateManifest()  {
+    public void generateManifest(ActionEvent e)  {
+
         if(count==0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Execution Manifest Error");
@@ -106,17 +111,33 @@ public class ExecutionManifestController {
             Config.put(config_no,Config_contents);
         }
         main_obj.put("startup_configs",Config);
-        try (FileWriter Data = new FileWriter(filename.getText()+".json")) {
-            Data.write(prettifyJSON(main_obj.toString(),4)); // setting spaces for indent
+        Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
+
+        FileChooser fileChooser=new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("JSON file(*.json)","*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        fileChooser.setInitialFileName(filename.getText().trim());
+        File file=fileChooser.showSaveDialog(primaryStage);
+        if (file != null) {
+            saveTextToFile(prettifyJSON(main_obj.toString(),4), file);
+            Path path= Path.of(file.getAbsolutePath());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Execution Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
-            Path path = Paths.get(filename.getText()+".json");
-
             alert.setContentText("Path: "+path.toAbsolutePath().toString());
             alert.showAndWait();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+        }
+
+        }
+
+    private void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
     public static String prettifyJSON(final String json_str, final int indent_width) {
