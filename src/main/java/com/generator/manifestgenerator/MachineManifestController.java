@@ -37,6 +37,11 @@ public class MachineManifestController {
     TextField filename;
     @FXML
     TextField fgname;
+    @FXML
+    public void initialize()  {
+        addPane(accordion,scroll,"machineState");
+        fg_names.add("machineState");
+    }
     public void generateManifest(){
         if(filename.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -50,6 +55,14 @@ public class MachineManifestController {
         JSONObject main_obj=new JSONObject();
         for(int i=0;i<fg_names.size();i++){
             JSONObject fg_obj = new JSONObject();
+            if(getSelectedItems(fg_modes_checkboxes.get(i)).size()==0){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Execution Manifest Error");
+                alert.setHeaderText("Missing Modes for Function Group: "+fg_names.get(i));
+                alert.setContentText("You must Enter at least one mode for it");
+                alert.showAndWait();
+                return;
+            }
             fg_obj.put("states",getSelectedItems(fg_modes_checkboxes.get(i)));
             fgs_objs.put(fg_names.get(i),fg_obj);
         }
@@ -140,7 +153,7 @@ public void addFunctionGroup(){
         return;
     }
     fg_names.add(fgname.getText().trim());
-    addPane(accordion,scroll);
+    addPane(accordion,scroll,fgname.getText().trim());
     fgname.clear();
 
 
@@ -150,6 +163,9 @@ public void addFunctionGroup(){
 
         if (expandedPane != null) {
             int expandedIndex = accordion.getPanes().indexOf(expandedPane);
+            if(expandedIndex==0) {
+            return;
+            }
             accordion.getPanes().remove(expandedPane);
             fg_names.remove(expandedIndex);
             fg_modes_checkboxes.remove(expandedIndex);
@@ -181,8 +197,8 @@ public boolean checkFGName(){
     return false;
 }
 
-    private void addPane(Accordion accordion, ScrollPane scrollPane) {
-        TitledPane newPane = createTitledPane();
+    private void addPane(Accordion accordion, ScrollPane scrollPane,String paneLabel) {
+        TitledPane newPane = createTitledPane(paneLabel);
         count++;
 
         accordion.getPanes().add(newPane);
@@ -194,9 +210,9 @@ public boolean checkFGName(){
 
         scrollPane.setVvalue(scrollPane.getVmax());
     }
-    private TitledPane createTitledPane() {
+    private TitledPane createTitledPane(String paneLabel) {
         return new TitledPane(
-                fgname.getText(),
+                paneLabel,
                 createTitledPaneContent()
         );
     }
