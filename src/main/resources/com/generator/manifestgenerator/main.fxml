@@ -17,12 +17,17 @@
             </VBox.margin>
             <children>
                 <VBox alignment="CENTER" minWidth="300.0" spacing="20">
-                    <Button fx:id="emManifest" onAction="#goToEM" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Execution Manifest" textAlignment="CENTER" textFill="#fffefe">
+                    <Button fx:id="emManifest1" onAction="#goToEM1" prefHeight="39.0" prefWidth="210.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Execution Manifest V.1" textAlignment="CENTER" textFill="#fffefe">
                         <font>
                             <Font size="12.0" />
                         </font>
                     </Button>
-                    <Button fx:id="machineManifest" onAction="#goToMachine" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Machine Manifest" textAlignment="CENTER" textFill="#fffefe">
+                    <Button fx:id="emManifest2" onAction="#goToEM2" prefHeight="39.0" prefWidth="210.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Execution Manifest V.2" textAlignment="CENTER" textFill="#fffefe">
+                        <font>
+                            <Font size="12.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="machineManifest" onAction="#goToMachine" prefHeight="39.0" prefWidth="210.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Machine Manifest" textAlignment="CENTER" textFill="#fffefe">
                         <font>
                             <Font size="12.0" />
                         </font>

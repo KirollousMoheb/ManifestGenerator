@@ -1,5 +1,6 @@
 package com.generator.manifestgenerator;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,9 +25,9 @@ import java.util.List;
 
 public class ExecutionManifestController {
     private  int count=0;
-    private final List<TextField> fg_name_container = new ArrayList<>();
-    private final List<TextField> fg_modes_container = new ArrayList<>();
-    private final List<TextField> sch_policy_container = new ArrayList<>();
+    private final List<ChoiceBox> fg_name_container = new ArrayList<>();
+    private final List<TextField> fg_states_container = new ArrayList<>();
+    private final List<ChoiceBox> sch_policy_container = new ArrayList<>();
     private final List<TextField> sch_priority_container = new ArrayList<>();
     private final List<TextField> args_container = new ArrayList<>();
     private final List<TextField> env_container = new ArrayList<>();
@@ -72,6 +73,14 @@ public class ExecutionManifestController {
             alert.showAndWait();
             return;
         }
+        if(!checkSameFunctionGroup()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Execution Manifest Error");
+            alert.setHeaderText("Misconfigured process - Assigned to more than one Function Group [SWS_EM_02254]");
+            alert.setContentText("Please choose only one Function Group");
+            alert.showAndWait();
+            return;
+        }
         if(filename.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Execution Manifest Error");
@@ -95,9 +104,9 @@ public class ExecutionManifestController {
             JSONObject Config_contents=new JSONObject();
             Config_contents.put("depends",depends);
             Config_contents.put("machine_states",machine_states);
-            fng_st.put(fg_name_container.get(i).getText(),fg_modes_container.get(i).getText());
+            fng_st.put(fg_name_container.get(i).getValue(), fg_states_container.get(i).getText());
             Config_contents.put("function_groups_states", fng_st);
-            Config_contents.put("scheduling_policy", sch_policy_container.get(i).getText());
+            Config_contents.put("scheduling_policy", sch_policy_container.get(i).getValue());
             Config_contents.put("scheduling_priority", sch_priority_container.get(i).getText());
             String user_args=args_container.get(i).getText();
             String user_envs=env_container.get(i).getText();
@@ -138,6 +147,16 @@ public class ExecutionManifestController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    private boolean checkSameFunctionGroup(){
+        for (int i = 0; i < fg_name_container.size(); i++) {
+            for (int j = i+1 ;j <fg_name_container.size() ; j++) {
+                if (fg_name_container.get(i).getValue()!=null&&!fg_name_container.get(i).getValue().equals(fg_name_container.get(j).getValue())){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     public static String prettifyJSON(final String json_str, final int indent_width) {
         final char[] chars = json_str.toCharArray();
@@ -200,7 +219,7 @@ public class ExecutionManifestController {
             count--;
 
             accordion.getPanes().remove(count);
-            fg_modes_container.remove(fg_modes_container.size()-1);
+            fg_states_container.remove(fg_states_container.size()-1);
             fg_name_container.remove(fg_name_container.size()-1);
             sch_priority_container.remove(sch_priority_container.size()-1);
             sch_policy_container.remove(sch_policy_container.size()-1);
@@ -231,19 +250,28 @@ public class ExecutionManifestController {
         grid.setPadding(new Insets(5, 5, 5, 5));
 
         grid.add(new Label("Function Group Name: "), 0, 0);
-        TextField fg_name=new TextField();
-        fg_name.setId("fg_name_"+count);
+
+        ChoiceBox<String> fg_name=new ChoiceBox();
+        fg_name.getItems().add("FunctionGroup1");
+        fg_name.getItems().add("FunctionGroup2");
+        fg_name.getItems().add("FunctionGroup3");
+        fg_name.setId("fg_name"+count);
         grid.add(fg_name, 1, 0);
         fg_name_container.add(fg_name);
 
-        TextField fg_modes=new TextField();
-        grid.add(new Label("Function Group Modes: "), 0, 1);
-        fg_modes.setId("fg_modes_"+count);
-        grid.add(fg_modes, 1, 1);
-        fg_modes_container.add(fg_modes);
+        TextField fg_states=new TextField();
+        grid.add(new Label("Function Group States: "), 0, 1);
+        fg_states.setId("fg_states_"+count);
+        grid.add(fg_states, 1, 1);
+        fg_states_container.add(fg_states);
+
+
 
         grid.add(new Label("Scheduling Policy: "), 0, 2);
-        TextField sch_policy=new TextField();
+        ChoiceBox sch_policy=new ChoiceBox();
+        sch_policy.getItems().add("SCHED_FIFO");
+        sch_policy.getItems().add("SCHED_RR");
+        sch_policy.getItems().add("SCHED_OTHER");
         sch_policy.setId("sch_policy_"+count);
         grid.add(sch_policy, 1, 2);
         sch_policy_container.add(sch_policy);
@@ -269,6 +297,20 @@ public class ExecutionManifestController {
 
         return grid;
     }
+    private List<String> getSelectedItems(CheckComboBox<String> checkComboBox) {
+        return checkComboBox.getCheckModel().getCheckedItems();
+    }
+    private CheckComboBox<String> createCheckComboBox() {
+        ObservableList<String> states = FXCollections.observableArrayList(
+                "off",
+                "startup",
+                "running",
+                "shutdown",
+                "restart"
+        );
+
+        return new CheckComboBox<>(states);
+    }
     private TitledPane createTitledPane() {
         return new TitledPane(
                 "startup_config_"+(count+1),
@@ -277,12 +319,12 @@ public class ExecutionManifestController {
     }
     private String validateFields(){
         for(int i=0;i<count;i++){
-            if (fg_name_container.get(i).getText().trim().isEmpty()||fg_name_container.get(i).getText()==null){
+            if (fg_name_container.get(i).getSelectionModel().isEmpty()){
                 return fg_name_container.get(i).getId()+" is Empty";
-            } else if (fg_modes_container.get(i).getText().trim().isEmpty()||fg_modes_container.get(i).getText()==null) {
-                return fg_modes_container.get(i).getId()+" is Empty";
+            } else if (fg_states_container.get(i).getText().trim().isEmpty()|| fg_states_container.get(i).getText()==null) {
+                return fg_states_container.get(i).getId()+" is Empty";
             }
-            else if (sch_policy_container.get(i).getText().trim().isEmpty()||sch_policy_container.get(i).getText()==null) {
+            else if (sch_policy_container.get(i).getSelectionModel().isEmpty()) {
                 return sch_policy_container.get(i).getId()+" is Empty";
             }
             else if (sch_priority_container.get(i).getText().trim().isEmpty()||sch_priority_container.get(i).getText()==null) {

@@ -43,9 +43,9 @@ public class MachineManifestController {
     public void generateManifest(ActionEvent e){
         if(filename.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Execution Manifest Error");
-            alert.setHeaderText("Missing Execution Manifest Id");
-            alert.setContentText("You must Enter Execution Manifest Id");
+            alert.setTitle("Machine Manifest Error");
+            alert.setHeaderText("Missing Machine Manifest Id");
+            alert.setContentText("You must Enter Machine Manifest Id");
             alert.showAndWait();
             return;
         }
@@ -55,7 +55,7 @@ public class MachineManifestController {
             JSONObject fg_obj = new JSONObject();
             if(getSelectedItems(fg_modes_checkboxes.get(i)).size()==0){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Execution Manifest Error");
+                alert.setTitle("Machine Manifest Error");
                 alert.setHeaderText("Missing Modes for Function Group: "+fg_names.get(i));
                 alert.setContentText("You must Enter at least one mode for it");
                 alert.showAndWait();
@@ -76,7 +76,7 @@ public class MachineManifestController {
             saveTextToFile(prettifyJSON(main_obj.toString(),4), file);
             Path path= Path.of(file.getAbsolutePath());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Execution Manifest Generated");
+            alert.setTitle("Machine Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
             alert.setContentText("Path: "+ path.toAbsolutePath());
             alert.showAndWait();
@@ -242,17 +242,14 @@ public boolean checkFGName(){
         return checkComboBox.getCheckModel().getCheckedItems();
     }
     private CheckComboBox<String> createCheckComboBox() {
-        // Create the list of items to be shown on the combobox
-        ObservableList<String> programmingLanguages = FXCollections.observableArrayList(
+        ObservableList<String> states = FXCollections.observableArrayList(
                 "off",
                 "startup",
                 "running",
                 "shutdown",
                 "restart"
         );
-        // Attach the list to the Combobox
-        //As soon as an item is selected or selection is changed, display all the selected items
 
-        return new CheckComboBox<>(programmingLanguages);
+        return new CheckComboBox<>(states);
     }
 }
