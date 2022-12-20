@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="600.0" prefWidth="720.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.ExecutionManifest2Controller">
+<Pane prefHeight="600.0" prefWidth="880.0" style="-fx-background-color: #ccddff;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.generator.manifestgenerator.ExecutionManifest2Controller">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
     <VBox fx:id="vb" style="-fx-background-color: #ccddff;">
-        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minWidth="780.0" spacing="0.0" style="-fx-background-color: #ffffff;">
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" minWidth="850.0" spacing="0.0" style="-fx-background-color: #ffffff;">
             <padding>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
@@ -22,7 +22,7 @@
                         <Font size="12.0" />
                     </font>
                     <HBox.margin>
-                        <Insets right="2.0" />
+                        <Insets left="50.0" right="2.0" />
                     </HBox.margin>
                 </Button>
                 <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="ExecutionManifest ID" textAlignment="CENTER" textFill="#ffffff">
@@ -51,22 +51,22 @@
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
             <children>
-                <Label wrapText="true" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="Function Cluster Process" textAlignment="CENTER" textFill="#ffffff">
+                <Label prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="Function Cluster Process" textAlignment="CENTER" textFill="#ffffff" wrapText="true">
                     <padding>
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
                 </Label>
-                <ChoiceBox fx:id="isfunctionclusterchoice" prefWidth="80.0" value="True">
+                <ChoiceBox fx:id="isfunctionclusterchoice" prefWidth="150.0" value="Functional Cluster">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
 
-                            <String fx:value="True" />
-                            <String fx:value="False" />
+                            <String fx:value="Function Cluster" />
+                            <String fx:value="Adaptive Application" />
 
                         </FXCollections>
                     </items>
                 </ChoiceBox>
-                <Label wrapText="true" prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="State Client Process" textAlignment="CENTER" textFill="#ffffff">
+                <Label prefHeight="39.0" prefWidth="120.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="State Client Process" textAlignment="CENTER" textFill="#ffffff" wrapText="true">
                     <padding>
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>

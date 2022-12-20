@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -17,6 +18,10 @@
             </VBox.margin>
             <children>
                 <VBox alignment="CENTER" minWidth="300.0" spacing="20">
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@download.png" />
+                     </image></ImageView>
                     <Button fx:id="emManifest1" onAction="#goToEM1" prefHeight="39.0" prefWidth="210.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Execution Manifest V.1" textAlignment="CENTER" textFill="#fffefe">
                         <font>
                             <Font size="12.0" />

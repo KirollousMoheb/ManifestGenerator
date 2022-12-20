@@ -31,6 +31,10 @@ public class ExecutionManifestController {
     private final List<TextField> sch_priority_container = new ArrayList<>();
     private final List<TextField> args_container = new ArrayList<>();
     private final List<TextField> env_container = new ArrayList<>();
+
+    private final List<CheckComboBox> machine_states_container = new ArrayList<>();
+
+
     @FXML
     Accordion accordion;
     @FXML
@@ -103,9 +107,16 @@ public class ExecutionManifestController {
             JSONObject depends=new JSONObject();
             JSONObject Config_contents=new JSONObject();
             Config_contents.put("depends",depends);
-            Config_contents.put("machine_states",machine_states);
-            fng_st.put(fg_name_container.get(i).getValue(), fg_states_container.get(i).getText());
-            Config_contents.put("function_groups_states", fng_st);
+
+
+            Config_contents.put("machine_states",getSelectedItems(machine_states_container.get(i)));
+            String fg_states_string=fg_states_container.get(i).getText().trim();
+            List<String> items1 = Arrays.asList(fg_states_string.split("\\s*,\\s*"));
+
+            for (int j=0;j<items1.size();j++){
+            fng_st.put(fg_name_container.get(i).getValue(), items1.get(j));
+            }
+            Config_contents.put("function_group_states", fng_st);
             Config_contents.put("scheduling_policy", sch_policy_container.get(i).getValue());
             Config_contents.put("scheduling_priority", sch_priority_container.get(i).getText());
             String user_args=args_container.get(i).getText();
@@ -225,6 +236,8 @@ public class ExecutionManifestController {
             sch_policy_container.remove(sch_policy_container.size()-1);
             args_container.remove(args_container.size()-1);
             env_container.remove(env_container.size()-1);
+            machine_states_container.remove(machine_states_container.size()-1);
+
 
             int nPanes = accordion.getPanes().size();
 
@@ -265,33 +278,38 @@ public class ExecutionManifestController {
         grid.add(fg_states, 1, 1);
         fg_states_container.add(fg_states);
 
+        CheckComboBox<String> machine_states_combo=createCheckComboBox();
+        grid.add(new Label("Machine States: "), 0, 2);
+        machine_states_combo.setId("machine_states"+count);
+        grid.add(machine_states_combo, 1, 2);
+        machine_states_container.add(machine_states_combo);
 
 
-        grid.add(new Label("Scheduling Policy: "), 0, 2);
+        grid.add(new Label("Scheduling Policy: "), 0, 3);
         ChoiceBox sch_policy=new ChoiceBox();
         sch_policy.getItems().add("SCHED_FIFO");
         sch_policy.getItems().add("SCHED_RR");
         sch_policy.getItems().add("SCHED_OTHER");
         sch_policy.setId("sch_policy_"+count);
-        grid.add(sch_policy, 1, 2);
+        grid.add(sch_policy, 1, 3);
         sch_policy_container.add(sch_policy);
 
-        grid.add(new Label("Scheduling Priority: "), 0, 3);
+        grid.add(new Label("Scheduling Priority: "), 0, 4);
         TextField sch_algo=new TextField();
         sch_algo.setId("sch_algo_"+count);
-        grid.add(sch_algo, 1, 3);
+        grid.add(sch_algo, 1, 4);
         sch_priority_container.add(sch_algo);
 
-        grid.add(new Label("Arguments: "), 0, 4);
+        grid.add(new Label("Arguments: "), 0, 5);
         TextField args=new TextField();
         args.setId("args_"+count);
-        grid.add(args, 1, 4);
+        grid.add(args, 1, 5);
         args_container.add(args);
 
-        grid.add(new Label("Environments: "), 0, 5);
+        grid.add(new Label("Environments: "), 0, 6);
         TextField env=new TextField();
         env.setId("env_"+count);
-        grid.add(env, 1, 5);
+        grid.add(env, 1, 6);
         env_container.add(env);
 
 

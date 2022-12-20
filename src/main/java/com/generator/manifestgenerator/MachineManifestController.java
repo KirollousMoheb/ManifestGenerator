@@ -1,7 +1,5 @@
 package com.generator.manifestgenerator;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.controlsfx.control.CheckComboBox;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -21,11 +18,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MachineManifestController {
     private final ArrayList<String> fg_names=new ArrayList<>();
-    private final List<CheckComboBox<String>> fg_modes_checkboxes = new ArrayList<>();
+    private final List<TextField> fg_states_container = new ArrayList<>();
 
     @FXML
     Accordion accordion;
@@ -53,15 +51,17 @@ public class MachineManifestController {
         JSONObject main_obj=new JSONObject();
         for(int i=0;i<fg_names.size();i++){
             JSONObject fg_obj = new JSONObject();
-            if(getSelectedItems(fg_modes_checkboxes.get(i)).size()==0){
+            if(fg_states_container.get(i).getText().trim().isEmpty()|| fg_states_container.get(i).getText()==null){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Machine Manifest Error");
-                alert.setHeaderText("Missing Modes for Function Group: "+fg_names.get(i));
-                alert.setContentText("You must Enter at least one mode for it");
+                alert.setHeaderText("Missing States for Function Group: "+fg_names.get(i));
+                alert.setContentText("You must Enter at least one State for it");
                 alert.showAndWait();
                 return;
             }
-            fg_obj.put("states",getSelectedItems(fg_modes_checkboxes.get(i)));
+            List<String> items = Arrays.asList(fg_states_container.get(i).getText().trim().split("\\s*,\\s*"));
+
+            fg_obj.put("states",items);
             fgs_objs.put(fg_names.get(i),fg_obj);
         }
         main_obj.put("function_groups",fgs_objs);
@@ -180,7 +180,7 @@ public void addFunctionGroup(){
             }
             accordion.getPanes().remove(expandedPane);
             fg_names.remove(expandedIndex);
-            fg_modes_checkboxes.remove(expandedIndex);
+            fg_states_container.remove(expandedIndex);
 
             int nPanes = accordion.getPanes().size();
 
@@ -231,25 +231,12 @@ public boolean checkFGName(){
         GridPane grid = new GridPane();
         grid.setVgap(4);
         grid.setPadding(new Insets(5, 5, 5, 5));
-        grid.add(new Label("Function Group Modes: "), 0, 0);
-        CheckComboBox<String> checkComboBox=createCheckComboBox();
-        grid.add(checkComboBox,1,0);
-        fg_modes_checkboxes.add(checkComboBox);
+        grid.add(new Label("Function Group States: "), 0, 0);
+        TextField fg_states=new TextField();
+        grid.add(fg_states,1,0);
+        fg_states_container.add(fg_states);
 
         return grid;
     }
-    private List<String> getSelectedItems(CheckComboBox<String> checkComboBox) {
-        return checkComboBox.getCheckModel().getCheckedItems();
-    }
-    private CheckComboBox<String> createCheckComboBox() {
-        ObservableList<String> states = FXCollections.observableArrayList(
-                "off",
-                "startup",
-                "running",
-                "shutdown",
-                "restart"
-        );
 
-        return new CheckComboBox<>(states);
-    }
 }

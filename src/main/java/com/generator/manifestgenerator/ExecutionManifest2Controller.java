@@ -39,7 +39,7 @@ public class ExecutionManifest2Controller {
     private final List<TextField> exit_time_container = new ArrayList<>();
 
     private final List<CheckComboBox<String>> machine_states_container = new ArrayList<>();
-    private final List<CheckComboBox<String>> fg_states_container = new ArrayList<>();
+    private final List<TextField> fg_states_container = new ArrayList<>();
 
     @FXML
     Accordion accordion;
@@ -114,7 +114,7 @@ public class ExecutionManifest2Controller {
 
 
         JSONObject main_obj = new JSONObject();
-        if(isfunctionclusterchoice.getValue().equals("True")){
+        if(isfunctionclusterchoice.getValue().equals("Functional Cluster")){
             main_obj.put("functional_cluster_process","true");
 
         }else{
@@ -143,7 +143,9 @@ public class ExecutionManifest2Controller {
 
             if(getSelectedItems(machine_states_container.get(i)).size()==0){
                 function_group_states.put("function_group_name",fg_name_container.get(i).getValue());
-                function_group_states.put("function_group_state",getSelectedItems(fg_states_container.get(i)));
+                String fg_states_string=fg_states_container.get(i).getText().trim();
+                List<String> items1 = Arrays.asList(fg_states_string.split("\\s*,\\s*"));
+                function_group_states.put("function_group_state",items1);
 
             }
             Config_object.put("function_group_states",function_group_states);
@@ -334,11 +336,10 @@ public class ExecutionManifest2Controller {
 
 
         grid.add(new Label("Function Group States: "), 0, 4);
-
-        CheckComboBox<String> fg_states_combo=createCheckComboBox();
-        grid.add(fg_states_combo,1,4);
-        fg_states_combo.setId("fg_state"+count);
-        fg_states_container.add(fg_states_combo);
+        TextField fg_states=new TextField();
+        grid.add(fg_states,1,4);
+        fg_states.setId("fg_state"+count);
+        fg_states_container.add(fg_states);
 
 
         grid.add(new Label("Scheduling Policy: "), 4, 0);
@@ -432,23 +433,33 @@ public class ExecutionManifest2Controller {
 
         for(int i=0;i<count;i++){
 
-            if ((getSelectedItems(fg_states_container.get(i)).size()==0)&&
+            if ((fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)&&
                     (fg_name_container.get(i).getSelectionModel().isEmpty())
                     &&getSelectedItems(machine_states_container.get(i)).size()==0) {
                 return "Can't Have Empty Function Group States and Machine States,Must Enter only one of them!";
             }else{
-                if ((getSelectedItems(machine_states_container.get(i)).size()>0)&&((!fg_name_container.get(i).getSelectionModel().isEmpty())||(getSelectedItems(fg_states_container.get(i)).size()>0))){
-                    return "Can't Enter Machine States and Function Group Together";
-                }else if((getSelectedItems(machine_states_container.get(i)).size()==0)&&((!fg_name_container.get(i).getSelectionModel().isEmpty())&&(getSelectedItems(fg_states_container.get(i)).size()==0))){
-                    return "Enter the Empty Function Group States Fields";
+                boolean machinestateempty=getSelectedItems(machine_states_container.get(i)).size()==0;
+                boolean functiongroupempty=(fg_name_container.get(i).getSelectionModel().isEmpty())
+                        ||(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null);
 
-                }else if((getSelectedItems(machine_states_container.get(i)).size()==0)&&((fg_name_container.get(i).getSelectionModel().isEmpty())&&(getSelectedItems(fg_states_container.get(i)).size()>0))){
+
+                if (!machinestateempty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())){
+                    return "Can't Enter Machine States and Function Group Together";
+                }
+                 else  if (!machinestateempty&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
+                    return "Can't Enter Machine States and Function Group Together";
+                }
+                else if(machinestateempty&&(fg_name_container.get(i).getSelectionModel().isEmpty())&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
                     return "Enter the Empty Function Group Name Fields";
+
+                }
+                else if(machinestateempty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())&&(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
+                    return "Enter the Empty Function Group States Fields";
 
                 }
 
             }
-
+//added
 
             if (config_name_container.get(i).getText().trim().isEmpty()|| config_name_container.get(i).getText()==null){
                 return config_name_container.get(i).getId()+" is Empty";
