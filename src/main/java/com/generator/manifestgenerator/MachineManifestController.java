@@ -1,5 +1,4 @@
 package com.generator.manifestgenerator;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,19 +10,21 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.*;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MachineManifestController {
     private final ArrayList<String> fg_names=new ArrayList<>();
     private final List<TextField> fg_states_container = new ArrayList<>();
+    private final List<String> importedFunctionGroupNames = new ArrayList<>();
+    private final List<String> importedFunctionGroupStates = new ArrayList<>();
+
+    private File file;
 
     @FXML
     Accordion accordion;
@@ -37,6 +38,68 @@ public class MachineManifestController {
     public void initialize()  {
         addPane(accordion,scroll,"machineState");
         fg_names.add("machineState");
+    }
+    public static <T> boolean hasDuplicate(Iterable<T> all) {
+        Set<T> set = new HashSet<T>();
+        for (T each: all) if (!set.add(each)) return true;
+        return false;
+    }
+    public void importManifest(ActionEvent e){
+        FileChooser chooser=new FileChooser();
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json Files","*.json"));
+        file=chooser.showOpenDialog(null);
+        for (int i = 0; i < fg_names.size(); i++) {
+            removeFunctionGroup();
+        }
+        if(file!=null){
+            filename.setText(file.getName().substring(0, file.getName().lastIndexOf(".")));
+
+            JSONParser jsonParser = new JSONParser();
+
+            try (FileReader reader = new FileReader(file.getAbsolutePath()))
+            {
+                JSONObject obj = (JSONObject)jsonParser.parse(reader);
+                JSONObject function_groups =  (JSONObject)obj.get("function_groups");
+
+                for(Iterator iterator = function_groups.keySet().iterator(); iterator.hasNext();) {
+                    String fgName = (String) iterator.next();
+                    JSONObject functionGroupStates= (JSONObject) function_groups.get(fgName);
+                    JSONArray functionGroupStatesNames=(JSONArray) functionGroupStates.get("states");
+                    String states=new String();
+                    for (int i = 0; i < functionGroupStatesNames.size(); i++) {
+                        states+=functionGroupStatesNames.get(i);
+                        if(i!=functionGroupStatesNames.size()-1){
+                            states+=",";
+                        }
+                    }
+                    System.out.println(fgName+" "+states);
+                    importedFunctionGroupStates.add(states);
+                    importedFunctionGroupNames.add(fgName);
+                }
+
+
+                for (int i=0;i<importedFunctionGroupNames.size();i++){
+                    if(i!=0){
+
+                        fg_names.add(importedFunctionGroupNames.get(i));
+                        addPane(accordion,scroll,importedFunctionGroupNames.get(i));
+                        fgname.clear();
+                    }
+                    fg_states_container.get(i).setText(importedFunctionGroupStates.get(i));
+                }
+                importedFunctionGroupNames.clear();
+                importedFunctionGroupStates.clear();
+
+            } catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Machine Manifest Error");
+                alert.setHeaderText("Invalid Machine Manifest");
+                alert.setContentText("Please Import a valid Manifest");
+                alert.showAndWait();
+                filename.clear();
+
+            }
+        }
     }
     public void generateManifest(ActionEvent e){
         if(filename.getText().trim().isEmpty()){
