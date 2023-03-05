@@ -1,4 +1,5 @@
 package com.generator.manifestgenerator;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,18 +14,21 @@ import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MachineManifestController {
     private final ArrayList<String> fg_names=new ArrayList<>();
     private final List<TextField> fg_states_container = new ArrayList<>();
     private final List<String> importedFunctionGroupNames = new ArrayList<>();
     private final List<String> importedFunctionGroupStates = new ArrayList<>();
-
-    private File file;
 
     @FXML
     Accordion accordion;
@@ -39,19 +43,15 @@ public class MachineManifestController {
         addPane(accordion,scroll,"machineState");
         fg_names.add("machineState");
     }
-    public static <T> boolean hasDuplicate(Iterable<T> all) {
-        Set<T> set = new HashSet<T>();
-        for (T each: all) if (!set.add(each)) return true;
-        return false;
-    }
-    public void importManifest(ActionEvent e){
+
+    public void importManifest(){
         FileChooser chooser=new FileChooser();
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json Files","*.json"));
-        file=chooser.showOpenDialog(null);
+        File file = chooser.showOpenDialog(null);
         for (int i = 0; i < fg_names.size(); i++) {
             removeFunctionGroup();
         }
-        if(file!=null){
+        if(file !=null){
             filename.setText(file.getName().substring(0, file.getName().lastIndexOf(".")));
 
             JSONParser jsonParser = new JSONParser();
@@ -61,19 +61,19 @@ public class MachineManifestController {
                 JSONObject obj = (JSONObject)jsonParser.parse(reader);
                 JSONObject function_groups =  (JSONObject)obj.get("function_groups");
 
-                for(Iterator iterator = function_groups.keySet().iterator(); iterator.hasNext();) {
-                    String fgName = (String) iterator.next();
-                    JSONObject functionGroupStates= (JSONObject) function_groups.get(fgName);
-                    JSONArray functionGroupStatesNames=(JSONArray) functionGroupStates.get("states");
-                    String states=new String();
+                for (Object o : function_groups.keySet()) {
+                    String fgName = (String) o;
+                    JSONObject functionGroupStates = (JSONObject) function_groups.get(fgName);
+                    JSONArray functionGroupStatesNames = (JSONArray) functionGroupStates.get("states");
+                    StringBuilder states = new StringBuilder();
                     for (int i = 0; i < functionGroupStatesNames.size(); i++) {
-                        states+=functionGroupStatesNames.get(i);
-                        if(i!=functionGroupStatesNames.size()-1){
-                            states+=",";
+                        states.append(functionGroupStatesNames.get(i));
+                        if (i != functionGroupStatesNames.size() - 1) {
+                            states.append(",");
                         }
                     }
-                    System.out.println(fgName+" "+states);
-                    importedFunctionGroupStates.add(states);
+                    System.out.println(fgName + " " + states);
+                    importedFunctionGroupStates.add(states.toString());
                     importedFunctionGroupNames.add(fgName);
                 }
 
