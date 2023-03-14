@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
@@ -68,6 +69,7 @@ public class ExecutionManifest2Controller {
 
         if(count==0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setTitle("Execution Manifest Error");
             alert.setHeaderText("Must have at least one Startup Configuration");
             alert.setContentText("Please Add at least one Startup Configuration");
@@ -86,6 +88,7 @@ public class ExecutionManifest2Controller {
         }
         if(!checkSameFunctionGroup()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setTitle("Execution Manifest Error");
             alert.setHeaderText("Misconfigured process - Assigned to more than one Function Group [SWS_EM_02254]");
             alert.setContentText("Please choose only one Function Group");
@@ -94,6 +97,7 @@ public class ExecutionManifest2Controller {
         }
         if(!checkConfigName()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setTitle("Execution Manifest Error");
             alert.setHeaderText("Configurations Must Have Different Names");
             alert.setContentText("Please choose Different Configuration Names");
@@ -102,6 +106,7 @@ public class ExecutionManifest2Controller {
         }
         if(filename.getText().trim().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setTitle("Execution Manifest Error");
             alert.setHeaderText("Missing Execution Manifest Id");
             alert.setContentText("You must Enter Execution Manifest Id");
@@ -175,6 +180,7 @@ public class ExecutionManifest2Controller {
             saveTextToFile(prettifyJSON(main_obj.toString(),4), file);
             Path path= Path.of(file.getAbsolutePath());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setTitle("Execution Manifest Generated");
             alert.setHeaderText("File Saved Successfully");
             alert.setContentText("Path: "+ path.toAbsolutePath());
@@ -637,6 +643,8 @@ public class ExecutionManifest2Controller {
                 //validated imported data here before displaying them on gui
                 if(hasDuplicate(imported_config_name_container)){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+
                     alert.setTitle("Execution Manifest Error");
                     alert.setHeaderText("Invalid Machine Manifest");
                     alert.setContentText("Duplicate Configuration names");
@@ -647,6 +655,7 @@ public class ExecutionManifest2Controller {
                 }
                 if(!verifyAllEqual(imported_fg_name_container)){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                     alert.setTitle("Execution Manifest Error");
                     alert.setHeaderText("Misconfigured process - Assigned to more than one Function Group [SWS_EM_02254]");
                     alert.setContentText("Imported Manifest Configurations Must be in same Function Group");
@@ -703,6 +712,7 @@ public class ExecutionManifest2Controller {
 
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                 alert.setTitle("Execution Manifest Error");
                 alert.setHeaderText("Invalid Machine Manifest");
                 alert.setContentText("Please Import a valid Manifest");
