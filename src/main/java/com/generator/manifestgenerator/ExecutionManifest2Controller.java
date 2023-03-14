@@ -47,9 +47,9 @@ public class ExecutionManifest2Controller {
     @FXML
     TextField filename;
     @FXML
-    ChoiceBox isfunctionclusterchoice;
+    ChoiceBox isFunctionClusterChoice;
     @FXML
-    ChoiceBox isstateclientchoice;
+    ChoiceBox isStateClientChoice;
 
     public void clickBack(ActionEvent e) throws IOException {
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
@@ -117,13 +117,13 @@ public class ExecutionManifest2Controller {
 
 
         JSONObject main_obj = new JSONObject();
-        if(isfunctionclusterchoice.getValue().equals("Functional Cluster")){
+        if(isFunctionClusterChoice.getValue().equals("Functional Cluster")){
             main_obj.put("functional_cluster_process","true");
 
         }else{
             main_obj.put("functional_cluster_process","false");
         }
-        if(isstateclientchoice.getValue().equals("True")){
+        if(isStateClientChoice.getValue().equals("True")){
             main_obj.put("state_client_process","true");
 
         }else{
@@ -451,22 +451,22 @@ public class ExecutionManifest2Controller {
                     &&getSelectedItems(machine_states_container.get(i)).size()==0) {
                 return "Can't Have Empty Function Group States and Machine States,Must Enter only one of them!";
             }else{
-                boolean machinestateempty=getSelectedItems(machine_states_container.get(i)).size()==0;
-                boolean functiongroupempty=(fg_name_container.get(i).getSelectionModel().isEmpty())
+                boolean machineStateEmpty=getSelectedItems(machine_states_container.get(i)).size()==0;
+                boolean functionGroupEmpty=(fg_name_container.get(i).getSelectionModel().isEmpty())
                         ||(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null);
 
 
-                if (!machinestateempty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())){
+                if (!machineStateEmpty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())){
                     return "Can't Enter Machine States and Function Group Together";
                 }
-                 else  if (!machinestateempty&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
+                 else  if (!machineStateEmpty&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
                     return "Can't Enter Machine States and Function Group Together";
                 }
-                else if(machinestateempty&&(fg_name_container.get(i).getSelectionModel().isEmpty())&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
+                else if(machineStateEmpty&&(fg_name_container.get(i).getSelectionModel().isEmpty())&&!(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
                     return "Enter the Empty Function Group Name Fields";
 
                 }
-                else if(machinestateempty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())&&(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
+                else if(machineStateEmpty&&!(fg_name_container.get(i).getSelectionModel().isEmpty())&&(fg_states_container.get(i).getText().isEmpty()||fg_states_container.get(i).getText()==null)){
                     return "Enter the Empty Function Group States Fields";
 
                 }
@@ -549,7 +549,6 @@ public class ExecutionManifest2Controller {
             JSONParser jsonParser = new JSONParser();
             try (FileReader reader = new FileReader(file.getAbsolutePath()))
             {
-               // System.out.println("asda");
                 JSONObject obj = (JSONObject)jsonParser.parse(reader);
                 String functional_cluster_process= (String) obj.get("functional_cluster_process");
                 String state_client_process= (String) obj.get("state_client_process");
@@ -611,12 +610,6 @@ public class ExecutionManifest2Controller {
                     long enter_timeout_ns= (long) time.get("enter_timeout_ns");
                     long exit_timeout_ns= (long) time.get("exit_timeout_ns");
                     String function_group_name=(String)function_group_states.get("function_group_name");
-//                    System.out.println(config_name);
-//                    System.out.println(scheduling_policy);
-//                    System.out.println(scheduling_priority);
-//                    System.out.println(enter_timeout_ns);
-//                    System.out.println(exit_timeout_ns);
-//                    System.out.println(function_group_name);
 
                     imported_config_name_container.add(config_name);
                     imported_sch_policy_container.add(scheduling_policy);
@@ -629,12 +622,6 @@ public class ExecutionManifest2Controller {
                     imported_env_container.add(String.valueOf(environments_string));
                     imported_exec_depend_container.add(String.valueOf(execution_dependency_string));
                     imported_fg_states_container.add(String.valueOf(function_group_state_string));
-
-//                    System.out.println(function_group_state_string);
-//                    System.out.println(arguments_string);
-//                    System.out.println(environments_string);
-//                    System.out.println(execution_dependency_string);
-//                    System.out.println("finish config");
 
 
                 }
@@ -672,15 +659,15 @@ public class ExecutionManifest2Controller {
 
 
                 if (functional_cluster_process.equals("true")){
-                    isfunctionclusterchoice.getSelectionModel().selectFirst();
+                    isFunctionClusterChoice.getSelectionModel().selectFirst();
                 }else{
-                    isfunctionclusterchoice.getSelectionModel().selectLast();
+                    isFunctionClusterChoice.getSelectionModel().selectLast();
 
                 }
                 if (state_client_process.equals("true")){
-                    isstateclientchoice.getSelectionModel().selectFirst();
+                    isStateClientChoice.getSelectionModel().selectFirst();
                 }else{
-                    isstateclientchoice.getSelectionModel().selectLast();
+                    isStateClientChoice.getSelectionModel().selectLast();
 
                 }
                 for (int i = 0; i < startup_configs.size(); i++) {

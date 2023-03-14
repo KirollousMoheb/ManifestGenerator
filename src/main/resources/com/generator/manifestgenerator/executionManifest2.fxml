@@ -67,7 +67,7 @@
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
                 </Label>
-                <ChoiceBox fx:id="isfunctionclusterchoice" prefWidth="150.0" value="Functional Cluster">
+                <ChoiceBox fx:id="isFunctionClusterChoice" prefWidth="150.0" value="Functional Cluster">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
 

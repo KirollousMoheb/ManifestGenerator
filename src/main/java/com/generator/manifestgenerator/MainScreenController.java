@@ -14,7 +14,7 @@ public class MainScreenController {
     @FXML
     public void goToMachine(ActionEvent e) throws IOException {
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader MachineManifestPaneLoader = new FXMLLoader(getClass().getResource("machinemanifest.fxml"));
+        FXMLLoader MachineManifestPaneLoader = new FXMLLoader(getClass().getResource("machineManifest.fxml"));
         Parent MachineManifestPane = MachineManifestPaneLoader.load();
         Scene MachineManifestScene = new Scene(MachineManifestPane, 780, 600);
         primaryStage.setTitle("Machine Manifest Generator");
@@ -23,7 +23,7 @@ public class MainScreenController {
     @FXML
     public void goToEM1(ActionEvent e) throws IOException{
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader ExecutionManifestPaneLoader = new FXMLLoader(getClass().getResource("executionmanifest.fxml"));
+        FXMLLoader ExecutionManifestPaneLoader = new FXMLLoader(getClass().getResource("executionManifest.fxml"));
         Parent ExecutionManifestPane = ExecutionManifestPaneLoader.load();
         Scene ExecutionManifestScene = new Scene(ExecutionManifestPane, 780, 600);
         primaryStage.setTitle("Execution Manifest Generator Version 1");
@@ -32,7 +32,7 @@ public class MainScreenController {
     @FXML
     public void goToEM2(ActionEvent e) throws IOException{
         Stage primaryStage = (Stage)((Node)e.getSource()).getScene().getWindow();
-        FXMLLoader ExecutionManifestPaneLoader = new FXMLLoader(getClass().getResource("executionmanifest2.fxml"));
+        FXMLLoader ExecutionManifestPaneLoader = new FXMLLoader(getClass().getResource("executionManifest2.fxml"));
         Parent ExecutionManifestPane = ExecutionManifestPaneLoader.load();
         Scene ExecutionManifestScene = new Scene(ExecutionManifestPane, 870, 600);
         primaryStage.setTitle("Execution Manifest Generator Version 2");

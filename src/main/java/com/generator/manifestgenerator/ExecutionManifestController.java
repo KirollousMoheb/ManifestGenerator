@@ -103,7 +103,6 @@ public class ExecutionManifestController {
         JSONObject Config = new JSONObject();
         for (int i=0;i<count;i++){
             JSONObject fng_st=new JSONObject();
-            JSONArray machine_states=new JSONArray();
             JSONObject depends=new JSONObject();
             JSONObject Config_contents=new JSONObject();
             Config_contents.put("depends",depends);
@@ -111,10 +110,10 @@ public class ExecutionManifestController {
 
             Config_contents.put("machine_states",getSelectedItems(machine_states_container.get(i)));
             String fg_states_string=fg_states_container.get(i).getText().trim();
-            List<String> items1 = Arrays.asList(fg_states_string.split("\\s*,\\s*"));
+            String[] items1 = fg_states_string.split("\\s*,\\s*");
 
-            for (int j=0;j<items1.size();j++){
-            fng_st.put(fg_name_container.get(i).getValue(), items1.get(j));
+            for (String s : items1) {
+                fng_st.put(fg_name_container.get(i).getValue(), s);
             }
             Config_contents.put("function_group_states", fng_st);
             Config_contents.put("scheduling_policy", sch_policy_container.get(i).getValue());
