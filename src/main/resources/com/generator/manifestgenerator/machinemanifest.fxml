@@ -10,94 +10,108 @@
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
     <VBox fx:id="vb" style="-fx-background-color: #ccddff;">
-        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="0.0" style="-fx-background-color: #ffffff;">
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: #ffffff;">
             <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
+                <Insets bottom="10" left="10" right="10" top="10"/>
             </padding>
-            <children>
-                <Button fx:id="backButton" minHeight="38.0" onAction="#clickBack" prefHeight="39.0" prefWidth="70.0" style="-fx-background-color: #0066ff;-fx-background-radius: 0;-fx-font-weight: bold;" text="&lt;" textAlignment="CENTER" textFill="#ffffff">
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-               <HBox.margin>
-                  <Insets right="2.0" />
-               </HBox.margin>
-                </Button>
-                <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="MachineManifest ID" textAlignment="CENTER" textFill="#ffffff">
-                    <padding>
-                        <Insets left="10.0" right="5.0" />
-                    </padding>
-                </Label>
-                <TextField fx:id="filename" prefHeight="39.0" prefWidth="250.0" style=" -fx-background-radius: 0;-fx-font-weight: bold;">
-                    <padding>
-                        <Insets bottom="0" left="5" right="5" top="0" />
-                    </padding>
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-                </TextField>
-                <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-               <HBox.margin>
-                  <Insets right="5.0" />
-               </HBox.margin>
-                </Button>
+            <Button fx:id="backButton" minHeight="38.0" onAction="#clickBack" prefHeight="39.0" prefWidth="70.0"
+                    style="-fx-background-color: #0066ff;-fx-background-radius: 0;-fx-font-weight: bold;" text="&lt;"
+                    textAlignment="CENTER" textFill="#ffffff">
+                <font>
+                    <Font size="12.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets right="2.0"/>
+                </HBox.margin>
+            </Button>
+            <Label prefHeight="39.0" prefWidth="141.0"
+                   style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;"
+                   text="MachineManifest ID" textAlignment="CENTER" textFill="#ffffff">
+                <padding>
+                    <Insets left="10.0" right="5.0"/>
+                </padding>
+            </Label>
+            <TextField fx:id="filename" prefHeight="39.0" prefWidth="250.0"
+                       style=" -fx-background-radius: 0;-fx-font-weight: bold;">
+                <padding>
+                    <Insets left="5" right="5"/>
+                </padding>
+                <HBox.margin>
+                    <Insets right="5.0"/>
+                </HBox.margin>
+            </TextField>
+            <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0"
+                    style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;"
+                    text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets right="5.0"/>
+                </HBox.margin>
+            </Button>
 
-                <Button fx:id="importBtn" onAction="#importManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Import Manifest" textAlignment="CENTER" textFill="#fffefe">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-                </Button>
+            <Button fx:id="importBtn" onAction="#importManifest" prefHeight="39.0" prefWidth="141.0"
+                    style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;"
+                    text="Import Manifest" textAlignment="CENTER" textFill="#fffefe">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Button>
 
-            </children></HBox>
-        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="0.0" style="-fx-background-color: #ccddff;">
+        </HBox>
+        <HBox alignment="CENTER_LEFT" maxWidth="Infinity" style="-fx-background-color: #ccddff;">
             <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
+                <Insets bottom="10" left="10" right="10" top="10"/>
             </padding>
-            <children>
-                <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="Function Group name" textAlignment="CENTER" textFill="#ffffff">
-                    <padding>
-                        <Insets left="10.0" right="5.0" />
-                    </padding>
-                </Label>
-                <TextField fx:id="fgname" prefHeight="39.0" prefWidth="200.0" style=" -fx-background-radius: 0;-fx-font-weight: bold;">
-                    <padding>
-                        <Insets bottom="0" left="5" right="5" top="0" />
-                    </padding>
-                </TextField>
-                <Button fx:id="addBtn" onAction="#addFunctionGroup" prefHeight="39.0" prefWidth="180.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Add Function Group" textAlignment="CENTER" textFill="#fffefe">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-               <HBox.margin>
-                  <Insets left="20.0" right="30.0" />
-               </HBox.margin>
-                </Button>
-                <Button fx:id="RMVBtn" onAction="#removeFunctionGroup" prefHeight="39.0" prefWidth="180.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Remove Function Group" textAlignment="CENTER" textFill="#fffefe">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-                </Button>
-            </children></HBox>
+            <Label prefHeight="39.0" prefWidth="141.0"
+                   style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;"
+                   text="Function Group name" textAlignment="CENTER" textFill="#ffffff">
+                <padding>
+                    <Insets left="10.0" right="5.0"/>
+                </padding>
+            </Label>
+            <TextField fx:id="fgname" prefHeight="39.0" prefWidth="200.0"
+                       style=" -fx-background-radius: 0;-fx-font-weight: bold;">
+                <padding>
+                    <Insets left="5" right="5"/>
+                </padding>
+            </TextField>
+            <Button fx:id="addBtn" onAction="#addFunctionGroup" prefHeight="39.0" prefWidth="180.0"
+                    style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;"
+                    text="Add Function Group" textAlignment="CENTER" textFill="#fffefe">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets left="20.0" right="30.0"/>
+                </HBox.margin>
+            </Button>
+            <Button fx:id="RMVBtn" onAction="#removeFunctionGroup" prefHeight="39.0" prefWidth="180.0"
+                    style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;"
+                    text="Remove Function Group" textAlignment="CENTER" textFill="#fffefe">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Button>
+        </HBox>
         <ScrollPane fx:id="scroll" maxHeight="400.0" minHeight="400.0" minWidth="700.0" VBox.vgrow="ALWAYS">
             <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
+                <Insets bottom="10" left="10" right="10" top="10"/>
             </padding>
-            <content>
-                <Accordion fx:id="accordion" focusTraversable="false" maxHeight="150.0" maxWidth="680.0" minHeight="150.0" minWidth="680.0">
-                    <panes>
-
-                    </panes>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </Accordion>
-            </content>
             <VBox.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </VBox.margin></ScrollPane>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </VBox.margin>
+            <Accordion fx:id="accordion" maxHeight="150.0" maxWidth="680.0" minHeight="150.0"
+                       minWidth="680.0">
+                <panes>
+
+                </panes>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+            </Accordion>
+        </ScrollPane>
 
 
     </VBox>

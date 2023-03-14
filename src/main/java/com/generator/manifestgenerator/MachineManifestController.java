@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
@@ -29,6 +30,12 @@ public class MachineManifestController {
     private final List<TextField> fg_states_container = new ArrayList<>();
     private final List<String> importedFunctionGroupNames = new ArrayList<>();
     private final List<String> importedFunctionGroupStates = new ArrayList<>();
+    public Button RMVBtn;
+    public Button backButton;
+    public VBox vb;
+    public Button inputBtn;
+    public Button importBtn;
+    public Button addBtn;
 
     @FXML
     Accordion accordion;

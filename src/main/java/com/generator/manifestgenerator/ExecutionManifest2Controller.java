@@ -1,5 +1,4 @@
 package com.generator.manifestgenerator;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,14 +16,13 @@ import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import org.json.simple.parser.JSONParser;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ExecutionManifest2Controller {
     private  int count=0;
@@ -250,6 +248,17 @@ public class ExecutionManifest2Controller {
 
         scrollPane.setVvalue(scrollPane.getVmax());
     }
+    private void addImportedPane() {
+        TitledPane newPane = createTitledPane();
+        count++;
+
+        accordion.getPanes().add(newPane);
+
+        scroll.applyCss();
+        scroll.layout();
+
+        scroll.setVvalue(scroll.getVmax());
+    }
     private void removePane(Accordion accordion) {
 
         if (count >0) {
@@ -321,9 +330,8 @@ public class ExecutionManifest2Controller {
         grid.add(new Label("Function Group Name: "), 0, 3);
        // TextField fg_name=new TextField();
         ChoiceBox<String> fg_name=new ChoiceBox();
-        fg_name.getItems().add("FunctionGroup1");
-        fg_name.getItems().add("FunctionGroup2");
-        fg_name.getItems().add("FunctionGroup3");
+        fg_name.getItems().add("V2X");
+        fg_name.getItems().add("Vehicle_control");
          fg_name.setId("fg_name"+count);
          HBox hBox=new HBox();
          Button clear=new Button("clear");
@@ -400,11 +408,10 @@ public class ExecutionManifest2Controller {
     }
     private CheckComboBox<String> createCheckComboBox() {
         ObservableList<String> states = FXCollections.observableArrayList(
-                "off",
-                "startup",
-                "running",
-                "shutdown",
-                "restart"
+                "Startup",
+                "Running",
+                "Restart",
+                "Shutdown"
         );
 
         return new CheckComboBox<>(states);
@@ -485,10 +492,226 @@ public class ExecutionManifest2Controller {
                 return exit_time_container.get(i).getId()+" is Empty";
             }
 
-
-
-
         }
         return "OK";
+    }
+
+    public static <T> boolean hasDuplicate(Iterable<T> all) {
+        Set<T> set = new HashSet<T>();
+        // Set#add returns false if the set does not change, which
+        // indicates that a duplicate element has been added.
+        for (T each: all) if (!set.add(each)) return true;
+        return false;
+    }
+    public boolean verifyAllEqual(List<String> list) {
+        return list.isEmpty() || list.stream()
+                .allMatch(list.get(0)::equals);
+    }
+    private final List<String> imported_config_name_container = new ArrayList<>();
+    private final List<String> imported_exec_depend_container = new ArrayList<>();
+    private final List<String> imported_sch_policy_container = new ArrayList<>();
+    private final List<String> imported_sch_priority_container = new ArrayList<>();
+    private final List<String> imported_args_container = new ArrayList<>();
+    private final List<String> imported_env_container = new ArrayList<>();
+    private final List<String> imported_fg_name_container = new ArrayList<>();
+    private final List<String> imported_enter_time_container = new ArrayList<>();
+    private final List<String> imported_exit_time_container = new ArrayList<>();
+    private final List<List<String>> imported_machine_states_container = new ArrayList<>();
+    private final List<String> imported_fg_states_container = new ArrayList<>();
+    private void clearImportedData(){
+        imported_machine_states_container.clear();
+        imported_env_container.clear();
+        imported_args_container.clear();
+        imported_fg_states_container.clear();
+        imported_fg_name_container.clear();
+        imported_exit_time_container.clear();
+        imported_enter_time_container.clear();
+        imported_sch_priority_container.clear();
+        imported_exec_depend_container.clear();
+        imported_sch_policy_container.clear();
+        imported_config_name_container.clear();
+    }
+    public void importManifest() {
+        FileChooser chooser=new FileChooser();
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json Files","*.json"));
+        File file = chooser.showOpenDialog(null);
+        if(file !=null){
+            filename.setText(file.getName().substring(0, file.getName().lastIndexOf(".")));
+            while(count!=0){
+                removeConfig();
+            }
+            JSONParser jsonParser = new JSONParser();
+            try (FileReader reader = new FileReader(file.getAbsolutePath()))
+            {
+               // System.out.println("asda");
+                JSONObject obj = (JSONObject)jsonParser.parse(reader);
+                String functional_cluster_process= (String) obj.get("functional_cluster_process");
+                String state_client_process= (String) obj.get("state_client_process");
+                JSONArray startup_configs = (JSONArray) obj.get("startup_configs");
+                for (int i = 0; i < startup_configs.size(); i++) {
+                    JSONObject startup_config=(JSONObject) startup_configs.get(i);
+                    JSONObject function_group_states=(JSONObject) startup_config.get("function_group_states");
+                    JSONObject time=(JSONObject) startup_config.get("timeout");
+
+                    JSONArray arguments=(JSONArray)startup_config.get("arguments") ;
+                    JSONArray environments=(JSONArray)startup_config.get("environments") ;
+                    JSONArray machine_states=(JSONArray)startup_config.get("machine_states") ;
+                    List<String> x=new ArrayList<>();
+
+                    for (int j = 0; j < machine_states.size(); j++) {
+                        x.add((String) machine_states.get(j));
+                    }
+                    imported_machine_states_container.add(x);
+
+                    JSONArray execution_dependency=(JSONArray)startup_config.get("execution_dependency") ;
+                    JSONArray function_group_state=(JSONArray)function_group_states.get("function_group_state") ;
+
+                    StringBuilder arguments_string = new StringBuilder();
+                    StringBuilder environments_string = new StringBuilder();
+                    StringBuilder execution_dependency_string = new StringBuilder();
+                    StringBuilder function_group_state_string = new StringBuilder();
+
+                    for (int j = 0; j <arguments.size() ; j++) {
+                        arguments_string.append(arguments.get(j));
+                        if (j != arguments.size() - 1) {
+                            arguments_string.append(",");
+                        }
+                    }
+                    for (int j = 0; j <environments.size() ; j++) {
+                        environments_string.append(environments.get(j));
+                        if (j != environments.size() - 1) {
+                            environments_string.append(",");
+                        }
+                    }
+
+                    for (int j = 0; j <execution_dependency.size() ; j++) {
+                        execution_dependency_string.append(execution_dependency.get(j));
+                        if (j != execution_dependency.size() - 1) {
+                            execution_dependency_string.append(",");
+                        }
+                    }
+                    for (int j = 0; j <function_group_state.size() ; j++) {
+                        function_group_state_string.append(function_group_state.get(j));
+                        if (j != function_group_state.size() - 1) {
+                            function_group_state_string.append(",");
+                        }
+                    }
+
+
+                    String config_name=(String)startup_config.get("config_name");
+                    String scheduling_policy=(String)startup_config.get("scheduling_policy");
+                    String scheduling_priority=(String)startup_config.get("scheduling_priority");
+
+                    long enter_timeout_ns= (long) time.get("enter_timeout_ns");
+                    long exit_timeout_ns= (long) time.get("exit_timeout_ns");
+                    String function_group_name=(String)function_group_states.get("function_group_name");
+//                    System.out.println(config_name);
+//                    System.out.println(scheduling_policy);
+//                    System.out.println(scheduling_priority);
+//                    System.out.println(enter_timeout_ns);
+//                    System.out.println(exit_timeout_ns);
+//                    System.out.println(function_group_name);
+
+                    imported_config_name_container.add(config_name);
+                    imported_sch_policy_container.add(scheduling_policy);
+                    imported_sch_priority_container.add(scheduling_priority);
+                    imported_enter_time_container.add(String.valueOf(enter_timeout_ns));
+                    imported_exit_time_container.add(String.valueOf(exit_timeout_ns));
+                    imported_fg_name_container.add(function_group_name);
+
+                    imported_args_container.add(String.valueOf(arguments_string));
+                    imported_env_container.add(String.valueOf(environments_string));
+                    imported_exec_depend_container.add(String.valueOf(execution_dependency_string));
+                    imported_fg_states_container.add(String.valueOf(function_group_state_string));
+
+//                    System.out.println(function_group_state_string);
+//                    System.out.println(arguments_string);
+//                    System.out.println(environments_string);
+//                    System.out.println(execution_dependency_string);
+//                    System.out.println("finish config");
+
+
+                }
+
+
+                //validated imported data here before displaying them on gui
+                if(hasDuplicate(imported_config_name_container)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Execution Manifest Error");
+                    alert.setHeaderText("Invalid Machine Manifest");
+                    alert.setContentText("Duplicate Configuration names");
+                    alert.showAndWait();
+                    filename.clear();
+                    clearImportedData();
+                    return;
+                }
+                if(!verifyAllEqual(imported_fg_name_container)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Execution Manifest Error");
+                    alert.setHeaderText("Misconfigured process - Assigned to more than one Function Group [SWS_EM_02254]");
+                    alert.setContentText("Imported Manifest Configurations Must be in same Function Group");
+                    alert.showAndWait();
+                    filename.clear();
+                    clearImportedData();
+                    return;
+                }
+
+                for (int i = 0; i < startup_configs.size(); i++) {
+                    addImportedPane();
+                }
+                accordion.setExpandedPane(accordion.getPanes().get( Math.max(0, count-1)));
+
+
+                if (functional_cluster_process.equals("true")){
+                    isfunctionclusterchoice.getSelectionModel().selectFirst();
+                }else{
+                    isfunctionclusterchoice.getSelectionModel().selectLast();
+
+                }
+                if (state_client_process.equals("true")){
+                    isstateclientchoice.getSelectionModel().selectFirst();
+                }else{
+                    isstateclientchoice.getSelectionModel().selectLast();
+
+                }
+                for (int i = 0; i < startup_configs.size(); i++) {
+                    config_name_container.get(i).setText(imported_config_name_container.get(i));
+                    exec_depend_container.get(i).setText(imported_exec_depend_container.get(i));
+                    enter_time_container.get(i).setText(imported_enter_time_container.get(i));
+                    exit_time_container.get(i).setText(imported_exit_time_container.get(i));
+                    fg_states_container.get(i).setText(imported_fg_states_container.get(i));
+                    args_container.get(i).setText(imported_args_container.get(i));
+                    env_container.get(i).setText(imported_env_container.get(i));
+                    sch_priority_container.get(i).setText(imported_sch_priority_container.get(i));
+                   if(fg_name_container.get(i).getItems().contains(imported_fg_name_container.get(i))){
+                       fg_name_container.get(i).getSelectionModel().select(imported_fg_name_container.get(i));
+                   }
+                   if (sch_policy_container.get(i).getItems().contains(imported_sch_policy_container.get(i))){
+                       sch_policy_container.get(i).getSelectionModel().select(imported_sch_policy_container.get(i));
+                   }
+                    for (int j = 0; j < imported_machine_states_container.get(i).size(); j++) {
+                       String state=  imported_machine_states_container.get(i).get(j);
+                       if (machine_states_container.get(i).getItems().contains(state)){
+                           machine_states_container.get(i).getCheckModel().toggleCheckState(state);
+                       }
+                  }
+
+
+            }
+
+                clearImportedData();
+
+            } catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Execution Manifest Error");
+                alert.setHeaderText("Invalid Machine Manifest");
+                alert.setContentText("Please Import a valid Manifest");
+                alert.showAndWait();
+                filename.clear();
+            }
+
+        }
+
+
     }
 }

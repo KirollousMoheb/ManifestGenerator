@@ -22,7 +22,7 @@
                         <Font size="12.0" />
                     </font>
                     <HBox.margin>
-                        <Insets left="50.0" right="2.0" />
+                        <Insets left="25.0" right="2.0" />
                     </HBox.margin>
                 </Button>
                 <Label prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #7D7C7C; -fx-background-radius: 0;-fx-font-weight: bold;" text="ExecutionManifest ID" textAlignment="CENTER" textFill="#ffffff">
@@ -30,16 +30,27 @@
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
                 </Label>
-                <TextField fx:id="filename" prefHeight="39.0" prefWidth="400.0" style=" -fx-background-radius: 0;-fx-font-weight: bold;">
+                <TextField fx:id="filename" prefHeight="39.0" prefWidth="300.0" style=" -fx-background-radius: 0;-fx-font-weight: bold;">
                     <padding>
                         <Insets bottom="0" left="5" right="5" top="0" />
                     </padding>
                <font>
                   <Font size="18.0" />
                </font>
-
+                    <HBox.margin>
+                        <Insets right="5.0" />
+                    </HBox.margin>
                 </TextField>
+
                 <Button fx:id="inputBtn" onAction="#generateManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Generate Manifest" textAlignment="CENTER" textFill="#fffefe">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+                </Button>
+                <Button fx:id="importBtn" onAction="#importManifest" prefHeight="39.0" prefWidth="141.0" style="-fx-background-color: #0066ff;-fx-font-weight: bold; -fx-background-radius: 0;" text="Import Manifest" textAlignment="CENTER" textFill="#fffefe">
                     <font>
                         <Font size="13.0" />
                     </font>

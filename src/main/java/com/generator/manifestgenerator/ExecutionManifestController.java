@@ -265,9 +265,8 @@ public class ExecutionManifestController {
         grid.add(new Label("Function Group Name: "), 0, 0);
 
         ChoiceBox<String> fg_name=new ChoiceBox();
-        fg_name.getItems().add("FunctionGroup1");
-        fg_name.getItems().add("FunctionGroup2");
-        fg_name.getItems().add("FunctionGroup3");
+        fg_name.getItems().add("V2X");
+        fg_name.getItems().add("Vehicle_control");
         fg_name.setId("fg_name"+count);
         grid.add(fg_name, 1, 0);
         fg_name_container.add(fg_name);
